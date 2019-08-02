@@ -7,5 +7,10 @@ module.exports = {
     port:3306,
     user:'root',
     password:'root'
-  } 
+  },
+  // token配置
+  security:{
+    secretKey:"zxcwan",
+    expiresIn:60*60*24*30
+  },
 }
