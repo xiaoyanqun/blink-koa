@@ -2,7 +2,7 @@ const Router = require('koa-router')
 const router = new Router({
   prefix:'/v1/user'
 })
-const {User} = require('../../../models/user')
+const {User} = require('../../models/user')
 const {RegisterValidator} =  require('../../lib/validators/validator')
 const {Success} = require('../../../core/http-exception')
 router.post('/register',async (ctx)=>{

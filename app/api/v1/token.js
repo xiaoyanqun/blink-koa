@@ -4,10 +4,11 @@ const router = new Router({
 })
 const {TokenValidator} = require('../../lib/validators/validator')
 const {LoginType} = require('../../lib/enum')
-const {User} = require('../../../models/user')
+const {User} = require('../../models/user')
 const {ParameterException} = require('../../../core/http-exception')
 const {generateToken} = require('../../../core/util')
 const {Auth} = require('../../../middlewares/auth')
+const {WXManager} = require('../../services/wx')
 // 登录接口
 router.post('/',async (ctx)=>{
   console.log(ctx.request.body)
@@ -21,7 +22,8 @@ router.post('/',async (ctx)=>{
         //验证数据库中用户名跟密码
        token = await emailLogin(v.get('body.account'),v.get('body.secret'))
       break;
-    case LoginType.USER_MINI_PROGRAM:   
+    case LoginType.USER_MINI_PROGRAM:  
+      token = await WXManager.codeToToken(v.get('body.account'))
       break;
     default:throw new ParameterException('没有相应的处理函数')
   }

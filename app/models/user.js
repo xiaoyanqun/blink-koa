@@ -3,9 +3,10 @@ const bcrypt = require('bcryptjs')
 // 数据库自动填写字段插件
 const {Sequelize,Model} = require('sequelize')
 // 相关配置文件
-const {sequelize} = require('../core/db')
-const {NotFound,AuthFailed} = require('../core/http-exception')
+const {sequelize} = require('../../core/db')
+const {NotFound,AuthFailed} = require('../../core/http-exception')
 class User extends Model{
+  // 验证数据库中是否有相应的邮箱，密码
   static async verifyEmailPassword(email,plainPassword){
     const user = await User.findOne({
       where:{
@@ -21,6 +22,24 @@ class User extends Model{
     }
     return user
   }
+   // 查询是否存在 opendid 的小程序用户
+  static async getUserByOpenid(openid){
+    const user = User.findOne({
+      where:{
+        openid
+      }
+    })
+    return user;
+  }
+
+   // 注册小程用户
+   static async createUserByOpenid(openid){
+    //  创建用户
+     const user = User.create({
+      openid
+     })
+     return user
+   }
 }
 User.init({
   id:{
